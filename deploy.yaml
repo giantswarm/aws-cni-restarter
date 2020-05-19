@@ -39,10 +39,11 @@ apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
     name: aws-cni-restarter
+    namespace: kube-system
 spec:
   fsGroup:
     rule: RunAsAny
-  hostNetwork: false
+  hostNetwork: true
   privileged: false
   runAsUser:
     rule: MustRunAsNonRoot
@@ -50,6 +51,8 @@ spec:
     rule: RunAsAny
   supplementalGroups:
     rule: RunAsAny
+  volumes:
+    - secret
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -73,7 +76,7 @@ metadata:
   name: aws-cni-restarter
   namespace: kube-system
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "*/5 * * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 10
@@ -85,6 +88,7 @@ spec:
             app: aws-cni-restarter
         spec:
           serviceAccountName: aws-cni-restarter
+          hostNetwork: true
           containers:
             - name: aws-cni-restarter
               image: quay.io/giantswarm/aws-cni-restarter:1.0.0
