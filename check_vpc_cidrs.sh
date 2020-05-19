@@ -23,10 +23,13 @@ if [[ $previous_vpc_cidr_blocks_b64 == $vpc_cidr_blocks_b64 ]]; then
   echo "No action taken, CIDR blocks have not changed"
 else
   echo "CIDRs in VPC changed, restarting AWS CNI nodes"
-  # Rollout aws-node daemonset
-  # kubectl rollout restart daemonset aws-node -n kube-system
   # Delete all pods
   kubectl delete pods -l k8s-app=aws-node -n kube-system
   # Store new value in ConfigMap
-  kubectl create configmap -n kube-system aws-cni-cidrblocks --from-literal=cidrblocks=$vpc_cidr_blocks_b64 --dry-run=client -o yaml | kubectl apply -f -
+  if [[ $? -eq 0 ]]; then
+    echo "Pods deleted"
+    kubectl create configmap -n kube-system aws-cni-cidrblocks --from-literal=cidrblocks=$vpc_cidr_blocks_b64 --dry-run=client -o yaml | kubectl apply -f -
+  else
+    echo "Pods were not deleted deleted"
+  fi
 fi
