@@ -17,7 +17,7 @@ vpc_cidr_blocks=$(curl -s http://169.254.169.254/latest/meta-data/network/interf
 echo "Found CIDR blocks: ${vpc_cidr_blocks}"
 
 # Convert to base64
-vpc_cidr_blocks_b64=$(echo $vpc_cidr_blocks | base64 -w 0)
+vpc_cidr_blocks_b64=$(echo $vpc_cidr_blocks | base64)
 
 if [[ $previous_vpc_cidr_blocks_b64 == $vpc_cidr_blocks_b64 ]]; then
   echo "No action taken, CIDR blocks have not changed"
