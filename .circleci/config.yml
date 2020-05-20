@@ -28,8 +28,8 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-docker:
-          name: push-docker-kubectl-to-quay
-          image: "quay.io/giantswarm/docker-kubectl"
+          name: push-aws-cni-restarter-to-quay
+          image: "quay.io/giantswarm/aws-cni-restarter"
           username_envar: "QUAY_USERNAME"
           password_envar: "QUAY_PASSWORD"
           requires:
@@ -42,8 +42,8 @@ workflows:
               only: /^v.*/
 
       - architect/push-to-docker:
-          name: push-docker-kubectl-to-aliyun
-          image: "registry-intl.cn-shanghai.aliyuncs.com/giantswarm/docker-kubectl"
+          name: push-aws-cni-restarter-to-aliyun
+          image: "registry-intl.cn-shanghai.aliyuncs.com/giantswarm/aws-cni-restarter"
           username_envar: "ALIYUN_USERNAME"
           password_envar: "ALIYUN_PASSWORD"
           requires:
