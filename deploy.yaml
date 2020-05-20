@@ -91,7 +91,7 @@ spec:
           hostNetwork: true
           containers:
             - name: aws-cni-restarter
-              image: quay.io/giantswarm/aws-cni-restarter:1.0.0
+              image: quay.io/giantswarm/aws-cni-restarter:v1.0.0
           restartPolicy: OnFailure
           affinity:
             nodeAffinity:
