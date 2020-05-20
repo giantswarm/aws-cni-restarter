@@ -2,9 +2,8 @@
 
 # Get previous vpc_cidrs
 previous_vpc_cidr_blocks_b64=$(kubectl get configmaps -n kube-system aws-cni-cidrblocks -o json | jq -r '.data.cidrblocks')
-if [[ $? -ne 0 ]]; then
+if [[ $previous_vpc_cidr_blocks_b64 == "" ]]; then
     echo "No previous CIDR block found"
-    previous_vpc_cidr_blocks_b64="empty"
 else
     previous_vpc_cidr_blocks=$(echo $previous_vpc_cidr_blocks_b64 | base64 -d)
     echo "Previous CIDR blocks:  $previous_vpc_cidr_blocks"
